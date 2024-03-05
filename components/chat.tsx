@@ -15,6 +15,29 @@ const initialPrompt: Message = {
     "You are an assistant that helps users recall information from videos. You will provide them with essay questions, quizzes and other prompts to help them remember the information.",
 };
 
+const quizPrompt = `Generate a quiz in JSON format about "{Topic}", with a mix of multiple-choice and text questions. Include a short answer for each text question. Format the quiz with a title, questions array, and each question specifying its type, the question text, and for text questions, a short answer.
+
+eg.
+\`\`\`
+{
+  "title": "Quiz on {Topic}",
+  "questions": [
+    {
+      "type": "multiple-choice",
+      "question": "What is the capital of France?",
+      "choices": ["London", "Paris", "New York", "Berlin"],
+      "answer": "Paris"
+    },
+    {
+      "type": "text",
+      "question": "Explain the concept of gravity on a flat disk-shaped Earth and how it would affect individuals living towards the edge.",
+      "answer": "The concept of gravity on a flat disk-shaped Earth is that the force of gravity would pull objects towards the center of the disk. This would mean that individuals living towards the edge would experience a force that pulls them towards the center of the disk."
+    }
+  ]
+}
+
+Begin the string with "%QUIZ%".`;
+
 export default function Chat({
   id,
   initialMessages,
@@ -50,6 +73,7 @@ export default function Chat({
     });
 
   const [videoUrl, setVideoUrl] = useState("");
+  const [quiz, setQuiz] = useState(false);
 
   const handleSearchVideo = async () => {
     if (!videoUrl) return;
@@ -67,7 +91,10 @@ export default function Chat({
               "url": "${videoUrl}",
               "captions": ${JSON.stringify(data)}
             }
-          ]]]`,
+          ]]]
+          
+          ${quiz ? quizPrompt : ""}
+          `,
         },
         {
           options: {
@@ -94,18 +121,29 @@ export default function Chat({
     return (
       <div className="flex flex-col items-center h-screen justify-center gap-2">
         <article className="prose">
-          <h1>Link to Begin</h1>
+          <h1>Add A Youtube Link to Begin</h1>
         </article>
         <input
           type="text"
           value={videoUrl}
           onChange={(e) => setVideoUrl(e.target.value)}
           placeholder="Video URL"
-          className="input"
+          className="input max-w-96 w-full"
         />
-        <button onClick={handleSearchVideo} className="btn btn-primary">
-          Search
-        </button>
+        <div className="flex justify-center items-center gap-2">
+          <button onClick={handleSearchVideo} className="btn btn-primary">
+            Search
+          </button>
+
+          <input
+            onChange={() => setQuiz(!quiz)}
+            checked={quiz}
+            className="checkbox"
+            type="checkbox"
+            id="search"
+          />
+          <label htmlFor="search">Create Quiz</label>
+        </div>
       </div>
     );
   }
