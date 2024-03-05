@@ -1,4 +1,4 @@
-import SideBar from "../sidebar";
+import SideBar from "../../components/sidebar";
 
 export default async function Name({
   params,

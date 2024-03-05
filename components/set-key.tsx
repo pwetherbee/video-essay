@@ -16,7 +16,7 @@ export default function SetKey() {
     if (!key) return;
     localStorage.setItem("key", key);
     setSuccess(true);
-    location.reload();
+    router.push(`/${key}`);
   };
   return (
     <>

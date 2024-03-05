@@ -3,7 +3,16 @@
 import { Message } from "ai";
 import { useChat } from "ai/react";
 import { useParams, usePathname } from "next/navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import ChatList from "./messages-list";
+
+const initialPrompt: Message = {
+  id: "1",
+  role: "system",
+  content:
+    "You are an assistant that helps users recall information from videos. You will provide them with essay questions, quizzes and other prompts to help them remember the information.",
+};
 
 export default function Chat({
   id,
@@ -19,10 +28,13 @@ export default function Chat({
 
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
-      initialMessages,
+      initialMessages: initialMessages.length
+        ? initialMessages
+        : [initialPrompt],
       id,
       body: {
         id,
+        userKey: key,
       },
       onResponse(response) {
         if (response.status === 401) {
@@ -31,13 +43,64 @@ export default function Chat({
       },
       onFinish() {
         if (!path.includes("/c/")) {
-          window.history.pushState({}, "", `/c/${id}`);
+          window.history.pushState({}, "", `/${key}/c/${id}`);
         }
       },
     });
+
+  const [videoUrl, setVideoUrl] = useState("");
+
+  const handleSearchVideo = async () => {
+    if (!videoUrl) return;
+
+    const response = await fetch(`/api/get-captions?url=${videoUrl}`);
+    const data = await response.json();
+
+    if (response.ok) {
+      append(
+        {
+          role: "system",
+          content: data,
+        },
+        {
+          options: {
+            body: {
+              title: data.title,
+              description: data.description,
+              thumbnail: data.thumbnail,
+              id,
+            },
+          },
+        }
+      );
+    } else {
+      toast.error(data.message);
+    }
+  };
+
+  if (!(messages.length > 1)) {
+    return (
+      <div className="flex flex-col items-center h-screen justify-center gap-2">
+        <article className="prose">
+          <h1>Link to Begin</h1>
+        </article>
+        <input
+          type="text"
+          value={videoUrl}
+          onChange={(e) => setVideoUrl(e.target.value)}
+          placeholder="Video URL"
+          className="input"
+        />
+        <button onClick={handleSearchVideo} className="btn btn-primary">
+          Search
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h1>Client Component</h1>
+    <div className="p-4">
+      <ChatList messages={messages} />
     </div>
   );
 }

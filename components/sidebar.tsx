@@ -1,8 +1,11 @@
 import NewChat from "@/components/new-chat";
 import ViewKey from "@/components/view-key";
-import { getChats } from "./actions";
+import { getChats } from "../app/actions";
+import { unstable_noStore as noStore } from "next/cache";
+import ChatsList from "./chats-list";
 
 export default async function SideBar({ keyVal }: { keyVal: string }) {
+  noStore();
   console.log(keyVal);
   const chats = await getChats(keyVal);
   console.log(chats);
@@ -11,6 +14,7 @@ export default async function SideBar({ keyVal }: { keyVal: string }) {
       <ViewKey keyValue={keyVal} />
       <NewChat />
       <div className="divider" />
+      <ChatsList chats={chats} />
     </div>
   );
 }

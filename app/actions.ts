@@ -11,6 +11,8 @@ export async function getChats(userId?: string | null) {
     return [];
   }
 
+  console.log(userId);
+
   try {
     const pipeline = kv.pipeline();
     const chats: string[] = await kv.zrange(`user:chat:${userId}`, 0, -1, {
@@ -30,7 +32,10 @@ export async function getChats(userId?: string | null) {
 }
 
 export async function getChat(id: string, userId: string) {
+  console.log(userId);
   const chat = await kv.hgetall<Chat>(`chat:${id}`);
+
+  console.log(chat);
 
   if (!chat || (userId && chat.userId !== userId)) {
     return null;
