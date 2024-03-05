@@ -3,7 +3,7 @@
 import { Message } from "ai";
 import { useChat } from "ai/react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ChatList from "./chat-message-list";
 import { cn } from "@/lib/utils";
@@ -51,6 +51,14 @@ export default function Chat({
   const router = useRouter();
 
   const path = usePathname();
+
+  useEffect(() => {
+    if (path.includes("/c/")) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+      });
+    }
+  }, [path]);
 
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
@@ -211,7 +219,7 @@ export default function Chat({
               type="checkbox"
               id="search"
             />
-            <label htmlFor="search">Create Quiz</label>
+            <label htmlFor="search">Quiz</label>
           </form>
         </div>
       </div>
