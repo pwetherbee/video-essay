@@ -12,18 +12,21 @@ export default function ChatsList({
     createdAt: Date;
     id: string;
     messages: Message[];
+    title: string;
   }[];
 }) {
   const { id } = useParams();
   return (
-    <ul className="menu w-56 rounded-box">
+    <ul className="menu menu-md w-56 rounded-box">
       {chats.map((chat, index) => (
         <li key={index}>
           <Link
             className={id === chat.id ? "active" : ""}
             href={`/${chat.userId}/c/${chat.id}`}
           >
-            {chat.id}
+            <span className="overflow-ellipsis line-clamp-1 text-md">
+              {chat.title}
+            </span>
           </Link>
         </li>
       ))}

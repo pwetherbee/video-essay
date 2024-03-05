@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { IconKey } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function ViewKey({ keyValue }: { keyValue: string }) {
   const [key, setKey] = useState<string>();
@@ -29,6 +30,9 @@ export default function ViewKey({ keyValue }: { keyValue: string }) {
     <p className="text-sm text-gray-400 flex items-center justify-center gap-2">
       <IconKey size={15} />
       {keyValue}
+      <Link href="/">
+        <button className="btn btn-xs btn-ghost">Change</button>
+      </Link>
     </p>
   );
 }

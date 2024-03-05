@@ -5,7 +5,7 @@ import { useChat } from "ai/react";
 import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import ChatList from "./messages-list";
+import ChatList from "./chat-message-list";
 
 const initialPrompt: Message = {
   id: "1",
@@ -60,7 +60,13 @@ export default function Chat({
       append(
         {
           role: "system",
-          content: data,
+          content: `%VIDEO[[[
+            {
+              "type": "video",
+              "url": "${videoUrl}",
+              "captions": ${JSON.stringify(data)}
+            }
+          ]]]`,
         },
         {
           options: {
@@ -77,6 +83,11 @@ export default function Chat({
       toast.error(data.message);
     }
   };
+
+  // const handleDeleteChat = async () => {
+  //   await fetch(`/api/delete-chat?id=${id}`);
+  //   stop();
+  // };
 
   if (!(messages.length > 1)) {
     return (
@@ -100,6 +111,10 @@ export default function Chat({
 
   return (
     <div className="p-4">
+      {/* <div className="flex justify-end">
+        <button className="btn">Delete</button>
+      </div> */}
+
       <ChatList messages={messages} />
     </div>
   );

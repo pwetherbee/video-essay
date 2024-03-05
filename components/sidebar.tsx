@@ -10,7 +10,7 @@ export default async function SideBar({ keyVal }: { keyVal: string }) {
   const chats = await getChats(keyVal);
   console.log(chats);
   return (
-    <div className="w-64 h-screen bg-base-100/50 backdrop-blur p-2 flex flex-col items-center gap-4">
+    <div className="w-64 h-screen bg-base-100/50 backdrop-blur p-2 flex flex-col items-center gap-4 sticky top-0">
       <ViewKey keyValue={keyVal} />
       <NewChat />
       <div className="divider" />
