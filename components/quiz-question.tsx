@@ -1,7 +1,7 @@
 "use client";
 
 import { useCompletion } from "ai/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function QuizQuestion({
   question,
@@ -23,7 +23,7 @@ export default function QuizQuestion({
     e.preventDefault();
     console.log("Evaluating the answer to the question");
     await complete(
-      `Evaluate the answer to the ${question.question}|| The correct answer is ${question.answer}. || My answer: ${input}.`
+      `Evaluate the answer to the ${question.question}|| The correct answer is ${question.answer}. || My answer: ${input}. After explaining your analysis, append the value %CORRECT% if the answer is correct, and %INCORRECT% if the answer is incorrect. Or %PARTIALLY_CORRECT% if the answer is partially correct. Place these values at the end of the completion.`
     );
   };
 
@@ -81,9 +81,37 @@ export default function QuizQuestion({
       {completion && (
         <div>
           <h3>Answer</h3>
-          <p>{completion}</p>
+          <AIAnswer answer={completion} />
         </div>
       )}
+    </div>
+  );
+}
+
+function AIAnswer({ answer }: { answer: string }) {
+  const correctness = useMemo(() => {
+    if (answer.includes("%CORRECT%")) {
+      return "Correct";
+    } else if (answer.includes("%INCORRECT%")) {
+      return "Incorrect";
+    } else if (answer.includes("%PARTIALLY_CORRECT%")) {
+      return "Partially Correct";
+    } else {
+      return "Unknown";
+    }
+  }, [answer]);
+
+  // remove the correctness from the answer
+  const answerWithoutCorrectness = useMemo(() => {
+    return answer
+      .replace("%CORRECT%", "")
+      .replace("%INCORRECT%", "")
+      .replace("%PARTIALLY_CORRECT%", "");
+  }, [answer]);
+
+  return (
+    <div className="">
+      <p>{answerWithoutCorrectness}</p>
     </div>
   );
 }
