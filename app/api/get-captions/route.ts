@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const MAX_CAPTIONS = 50;
+const MAX_CAPTIONS = 1000;
 
 // ES5
 var getSubtitles = require("youtube-captions-scraper").getSubtitles;

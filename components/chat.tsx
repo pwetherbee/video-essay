@@ -6,6 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ChatList from "./chat-message-list";
+import { cn } from "@/lib/utils";
 
 const initialPrompt: Message = {
   id: "1",
@@ -116,6 +117,40 @@ export default function Chat({
       </div> */}
 
       <ChatList messages={messages} />
+      <div className="sticky bottom-0 pb-8 w-full flex justify-center">
+        <div className=" w-2/5">
+          <form className="">
+            <textarea
+              tabIndex={0}
+              rows={1}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Send a message."
+              spellCheck={false}
+              className="flex min-h-[60px] w-full rounded-md bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50 bg-base-300"
+            />
+            <button
+              type="button"
+              className="btn btn-ghost w-full mt-2"
+              onClick={() => {
+                append(
+                  { role: "user", content: input },
+                  {
+                    options: {
+                      body: {
+                        id,
+                      },
+                    },
+                  }
+                );
+                setInput("");
+              }}
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

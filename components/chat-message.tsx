@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
-    <div>
+    <div className="">
       <div className="flex items-center gap-2">
         <div
           className={cn(
