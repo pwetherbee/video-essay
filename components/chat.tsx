@@ -2,7 +2,7 @@
 
 import { Message } from "ai";
 import { useChat } from "ai/react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ChatList from "./chat-message-list";
@@ -48,6 +48,8 @@ export default function Chat({
   const params = useParams();
   const key = params.key;
 
+  const router = useRouter();
+
   const path = usePathname();
 
   const { messages, append, reload, stop, isLoading, input, setInput } =
@@ -74,6 +76,7 @@ export default function Chat({
           top: document.body.scrollHeight,
           behavior: "smooth",
         });
+        router.refresh();
       },
     });
 
