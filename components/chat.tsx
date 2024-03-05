@@ -69,6 +69,11 @@ export default function Chat({
         if (!path.includes("/c/")) {
           window.history.pushState({}, "", `/${key}/c/${id}`);
         }
+        // smooth scroll to the bottom of the chat
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
       },
     });
 
@@ -117,6 +122,9 @@ export default function Chat({
   //   stop();
   // };
 
+  // check if text field is focused, and set it to boolean
+  const [isFocused, setIsFocused] = useState(false);
+
   if (!(messages.length > 1)) {
     return (
       <div className="flex flex-col items-center h-screen justify-center gap-2">
@@ -155,9 +163,14 @@ export default function Chat({
       </div> */}
 
       <ChatList messages={messages} />
-      <div className="sticky bottom-0 pb-8 w-full flex justify-center">
+      <div className="sticky bottom-0 pb-4 w-full flex justify-center">
         <div className=" w-2/5">
-          <form className="">
+          <form
+            className={cn(
+              "flex bg-base-100 rounded-md gap-2 items-center p-2 shadow-md",
+              isFocused ? "" : "opacity-25"
+            )}
+          >
             <textarea
               tabIndex={0}
               rows={1}
@@ -165,11 +178,13 @@ export default function Chat({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Send a message."
               spellCheck={false}
-              className="flex min-h-[60px] w-full rounded-md bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50 bg-base-300"
+              className="min-h-[60px] flex-1 rounded-md bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50 "
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             />
             <button
               type="button"
-              className="btn btn-ghost w-full mt-2"
+              className="btn btn-ghost btn-outline w-20"
               onClick={() => {
                 append(
                   { role: "user", content: input },
@@ -186,6 +201,14 @@ export default function Chat({
             >
               Send
             </button>
+            <input
+              onChange={() => setQuiz(!quiz)}
+              checked={quiz}
+              className="checkbox checkbox-sm"
+              type="checkbox"
+              id="search"
+            />
+            <label htmlFor="search">Create Quiz</label>
           </form>
         </div>
       </div>

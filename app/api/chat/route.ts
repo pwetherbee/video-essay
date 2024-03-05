@@ -29,7 +29,24 @@ export async function POST(req: Request) {
 
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
-      const title = completion.substring(0, 50);
+      // generate a quick title based on the last message
+      const titleRes = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Create a super short title for this chat based on the last message",
+          },
+          {
+            role: "system",
+            content: completion,
+          },
+        ],
+        temperature: 0.7,
+      });
+
+      const title = titleRes.choices[0].message.content;
       const id = json.id ?? nanoid();
       const userId = json.userKey;
       const createdAt = Date.now();

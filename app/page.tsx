@@ -10,8 +10,8 @@ export default function Home() {
         <article className="prose">
           <h1>Get Started</h1>
           <p>
-            Welcome to the OpenAI Chatbot. To get started, create a unique key
-            to save your chat history.
+            Welcome to the video Quiz generator powered by ChatGPT. To get
+            started, create a unique key to save your chat history.
           </p>
         </article>
         <SetKey />
