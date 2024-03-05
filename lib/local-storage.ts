@@ -16,7 +16,7 @@ local storage Chats will contain Chat[]
 
 */
 
-import { EssayChat } from "@/types/Chat";
+import { Chat as EssayChat } from "@/types/Chat";
 
 // Path: lib/local-storage.ts
 

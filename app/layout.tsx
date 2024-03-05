@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SideBar from "./sidebar";
 import ViewKey from "@/components/view-key";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="night">
       <body className={inter.className}>
-        <div className="flex">
-          <SideBar />
-          <div className="flex-1">{children}</div>
-        </div>
+        <Providers>
+          <div className="flex">
+            <div className="flex-1">{children}</div>
+          </div>
+        </Providers>
       </body>
     </html>
   );

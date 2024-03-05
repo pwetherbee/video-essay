@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { IconKey } from "@tabler/icons-react";
 
-export default function Name() {
+export default function ViewKey({ keyValue }: { keyValue: string }) {
   const [key, setKey] = useState<string>();
   useEffect(() => {
     function checkUserData() {
@@ -28,7 +28,7 @@ export default function Name() {
   return (
     <p className="text-sm text-gray-400 flex items-center justify-center gap-2">
       <IconKey size={15} />
-      {key}
+      {keyValue}
     </p>
   );
 }

@@ -1,12 +1,15 @@
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
+import { type Message } from "ai";
 
-export interface EssayChat {
+export interface Chat extends Record<string, any> {
   id: string;
-  user: string;
-  createdAt: string;
+  title: string;
+  createdAt: Date;
+
   videoUrl: string;
-  videoTitle: string;
   videoCaptions: string;
 
-  chatMessages: ChatCompletionMessage[];
+  userId: string;
+  path: string;
+  messages: Message[];
+  sharePath?: string;
 }
