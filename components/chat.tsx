@@ -56,6 +56,7 @@ export default function Chat({
     if (path.includes("/c/")) {
       window.scrollTo({
         top: document.body.scrollHeight,
+        behavior: "smooth",
       });
     }
   }, [path]);
@@ -89,7 +90,7 @@ export default function Chat({
     });
 
   const [videoUrl, setVideoUrl] = useState("");
-  const [quiz, setQuiz] = useState(false);
+  const [quiz, setQuiz] = useState(true);
 
   const handleSearchVideo = async () => {
     if (!videoUrl) return;
@@ -133,6 +134,25 @@ export default function Chat({
   //   stop();
   // };
 
+  const [error, setError] = useState(false);
+  const [validUrl, setValidUrl] = useState(false);
+
+  useEffect(() => {
+    // validate the video url
+    if (videoUrl) {
+      try {
+        const url = new URL(videoUrl);
+        if (url.hostname !== "www.youtube.com") {
+          throw new Error("Invalid URL");
+        }
+        setError(false);
+        setValidUrl(true);
+      } catch (error) {
+        setError(true);
+      }
+    }
+  }, [videoUrl]);
+
   // check if text field is focused, and set it to boolean
   const [isFocused, setIsFocused] = useState(false);
 
@@ -141,28 +161,44 @@ export default function Chat({
       <div className="flex flex-col items-center h-screen justify-center gap-2">
         <article className="prose">
           <h1>Add A Youtube Link to Begin</h1>
-        </article>
-        <input
-          type="text"
-          value={videoUrl}
-          onChange={(e) => setVideoUrl(e.target.value)}
-          placeholder="Video URL"
-          className="input max-w-96 w-full"
-        />
-        <div className="flex justify-center items-center gap-2">
-          <button onClick={handleSearchVideo} className="btn btn-primary">
-            Search
-          </button>
+          <h2>
+            Paste a link to a Youtube video you would like to be quizzed on.
+          </h2>
 
           <input
-            onChange={() => setQuiz(!quiz)}
-            checked={quiz}
-            className="checkbox"
-            type="checkbox"
-            id="search"
+            type="text"
+            value={videoUrl}
+            onChange={(e) => setVideoUrl(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+            className={cn(
+              "input w-full",
+              error ? "input-error" : validUrl ? "input-info" : ""
+            )}
           />
-          <label htmlFor="search">Create Quiz</label>
-        </div>
+          <div className="flex justify-center items-center gap-2 mt-2">
+            <button
+              onClick={handleSearchVideo}
+              className="btn btn-primary"
+              disabled={!!error || !videoUrl}
+            >
+              Search
+            </button>
+
+            <input
+              onChange={() => setQuiz(!quiz)}
+              checked={quiz}
+              className="checkbox"
+              type="checkbox"
+              id="search"
+            />
+            <label htmlFor="search">Create Quiz</label>
+          </div>
+          <div className="divider" />
+          <p>Make sure the url is in the format </p>
+          <pre className="p-2 rounded-md">
+            https://www.youtube.com/watch?v=VIDEO_ID
+          </pre>
+        </article>
       </div>
     );
   }

@@ -23,7 +23,7 @@ export default function QuizQuestion({
     e.preventDefault();
     console.log("Evaluating the answer to the question");
     await complete(
-      `Evaluate the answer to the ${question.question}. The correct answer is ${question.answer} User's answer: ${input}.`
+      `Evaluate the answer to the ${question.question}|| The correct answer is ${question.answer}. || My answer: ${input}.`
     );
   };
 
