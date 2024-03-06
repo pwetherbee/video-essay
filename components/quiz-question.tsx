@@ -23,7 +23,7 @@ export default function QuizQuestion({
     e.preventDefault();
     console.log("Evaluating the answer to the question");
     await complete(
-      `Evaluate the answer to the ${question.question}|| The correct answer is ${question.answer}. || My answer: ${input}. After explaining your analysis, append the value %CORRECT% if the answer is correct, and %INCORRECT% if the answer is incorrect. Or %PARTIALLY_CORRECT% if the answer is partially correct. Place these values at the end of the completion.`
+      `Evaluate the answer to the ${question.question}|| The correct answer is ${question.answer}. || My answer: ${input}. After giving me your analysis, append the value %CORRECT% if the answer is correct, and %INCORRECT% if the answer is incorrect. Or %PARTIALLY_CORRECT% if the answer is partially correct. Place these values at the end of the completion.`
     );
   };
 
