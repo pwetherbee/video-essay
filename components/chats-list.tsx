@@ -17,7 +17,7 @@ export default function ChatsList({
 }) {
   const { id } = useParams();
   return (
-    <ul className="menu menu-md w-56 rounded-box">
+    <ul className="menu menu-md rounded-box">
       {chats.map((chat, index) => (
         <li key={index}>
           <Link

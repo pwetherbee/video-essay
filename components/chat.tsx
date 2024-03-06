@@ -81,10 +81,10 @@ export default function Chat({
           window.history.pushState({}, "", `/${key}/c/${id}`);
         }
         // smooth scroll to the bottom of the chat
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: "smooth",
-        });
+        // window.scrollTo({
+        //   top: document.body.scrollHeight,
+        //   behavior: "smooth",
+        // });
         router.refresh();
       },
     });
@@ -181,7 +181,7 @@ export default function Chat({
               className="btn btn-primary"
               disabled={!!error || !videoUrl}
             >
-              Search
+              Generate
             </button>
 
             <input

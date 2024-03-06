@@ -97,7 +97,7 @@ function AIAnswer({ answer }: { answer: string }) {
     } else if (answer.includes("%PARTIALLY_CORRECT%")) {
       return "Partially Correct";
     } else {
-      return "Unknown";
+      return "Computing...";
     }
   }, [answer]);
 
@@ -111,6 +111,7 @@ function AIAnswer({ answer }: { answer: string }) {
 
   return (
     <div className="">
+      <p>{correctness}</p>
       <p>{answerWithoutCorrectness}</p>
     </div>
   );

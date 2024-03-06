@@ -8,9 +8,10 @@ export default function Home() {
     <main className=" ">
       <div className="flex items-center justify-center h-screen flex-col gap-4">
         <article className="prose">
-          <h1>Get Started</h1>
+          <h1>Commit the videos you watch to memory</h1>
+          <h2>Get Started</h2>
           <p>
-            Welcome to the video Quiz generator powered by ChatGPT. To get
+            Welcome to the video quiz generator powered by ChatGPT. To get
             started, create a unique key to save your chat history.
           </p>
         </article>
