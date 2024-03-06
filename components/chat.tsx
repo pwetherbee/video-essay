@@ -164,6 +164,11 @@ export default function Chat({
           <h2>
             Paste a link to a Youtube video you would like to be quizzed on.
           </h2>
+          <p className="text-sm">
+            **Note. The closer the video is to a lecture or educational content,
+            the better the quiz will be. Videos that are based on information in
+            the public domain are best.
+          </p>
 
           <input
             type="text"
