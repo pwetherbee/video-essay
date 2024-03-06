@@ -20,18 +20,21 @@ export default function SetKey() {
   };
   return (
     <div className="join">
-      <input
-        className="input input-bordered w-full max-w-xs join-item"
-        value={key}
-        onChange={(e) => setKey(e.target.value)}
-        type="text"
-        placeholder="Create your unique key"
-      />
-      {key && key.length > 10 && (
-        <p className="text-xs text-red-600">
-          Key must be less than 10 characters
-        </p>
-      )}
+      <div>
+        <input
+          className="input input-bordered w-full max-w-xs join-item"
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+          type="text"
+          placeholder="Create your unique key"
+        />
+        {key && key.length > 10 && (
+          <p className="text-xs text-red-600 mt-2">
+            Key must be less than 10 characters
+          </p>
+        )}
+      </div>
+
       <button onClick={handleSaveKey} className="btn btn-primary join-item">
         Submit {success && "✔️"}
       </button>
