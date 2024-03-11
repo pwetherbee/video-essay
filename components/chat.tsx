@@ -15,7 +15,7 @@ const initialPrompt: Message = {
     "You are an assistant that helps users recall information from videos. You will provide them with essay questions, quizzes and other prompts to help them remember the information.",
 };
 
-const quizPrompt = `Generate a quiz in JSON format about "{Topic}", with a mix of multiple-choice and text questions. Include a short answer for each text question. Format the quiz with a title, questions array, and each question specifying its type, the question text, and for text questions, a short answer.
+const quizPrompt = `Generate a quiz in JSON format about "{Topic}", with a mix of multiple-choice and text questions. Include a short answer for each text question. Format the quiz with a title, questions array, and each question specifying its type, the question text, and for text questions, a short answer. Do not create questions that either dont have answers provided by the video or go beyond the scope of the video context. Realize that your knowledge is limited to the video content and you should not make assumptions about the topic. 
 
 eg.
 \`\`\`
@@ -23,12 +23,14 @@ eg.
   "title": "Quiz on {Topic}",
   "questions": [
     {
+      "analysis": "I should test the user's knowledge on this particular topic because x. A good question to ask would be etc.",
       "type": "multiple-choice",
       "question": "What is the capital of France?",
+      "answer": "Paris",
       "choices": ["London", "Paris", "New York", "Berlin"],
-      "answer": "Paris"
     },
     {
+      "analysis": "I should test the user's knowledge on this particular topic because y.",
       "type": "text",
       "question": "Explain the concept of gravity on a flat disk-shaped Earth and how it would affect individuals living towards the edge.",
       "answer": "The concept of gravity on a flat disk-shaped Earth is that the force of gravity would pull objects towards the center of the disk. This would mean that individuals living towards the edge would experience a force that pulls them towards the center of the disk."
