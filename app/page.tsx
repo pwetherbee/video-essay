@@ -7,8 +7,10 @@ export default function Home() {
     <main className=" ">
       <div className="flex items-center justify-center h-screen gap-4">
         <article className="prose flex-1">
-          <h1 className="text-7xl">Auto Quiz</h1>
+          <h1 className="text-7xl">FastQuiz ⚡</h1>
+
           <h3>Commit the videos you watch to memory</h3>
+          {/* <h1 className="text-5xl pl-10">📺 + 📝 = 🧠</h1> */}
         </article>
         <div className="space-y-4">
           <article className="prose">

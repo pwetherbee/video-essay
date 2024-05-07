@@ -54,14 +54,14 @@ export default function Chat({
 
   const path = usePathname();
 
-  useEffect(() => {
-    if (path.includes("/c/")) {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [path]);
+  // useEffect(() => {
+  //   if (path.includes("/c/")) {
+  //     window.scrollTo({
+  //       top: document.body.scrollHeight,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // }, [path]);
 
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
@@ -93,9 +93,12 @@ export default function Chat({
 
   const [videoUrl, setVideoUrl] = useState("");
   const [quiz, setQuiz] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchVideo = async () => {
     if (!videoUrl) return;
+
+    setLoading(true);
 
     const response = await fetch(`/api/get-captions?url=${videoUrl}`);
     const data = await response.json();
@@ -129,6 +132,7 @@ export default function Chat({
     } else {
       toast.error(data.message);
     }
+    setLoading(false);
   };
 
   // const handleDeleteChat = async () => {
@@ -186,8 +190,9 @@ export default function Chat({
             <button
               onClick={handleSearchVideo}
               className="btn btn-primary"
-              disabled={!!error || !videoUrl}
+              disabled={!!error || !videoUrl || loading}
             >
+              {loading ? <span className="loading loading-spinner" /> : null}
               Generate
             </button>
 
@@ -200,11 +205,11 @@ export default function Chat({
             />
             <label htmlFor="search">Create Quiz</label>
           </div>
-          <div className="divider" />
+          {/* <div className="divider" />
           <p>Make sure the url is in the format </p>
           <pre className="p-2 rounded-md">
             https://www.youtube.com/watch?v=VIDEO_ID
-          </pre>
+          </pre> */}
         </article>
       </div>
     );
@@ -216,7 +221,7 @@ export default function Chat({
         <button className="btn">Delete</button>
       </div> */}
 
-      <ChatList messages={messages} />
+      <ChatList messages={messages} isLoading={isLoading} />
       <div className="sticky bottom-0 pb-4 w-full flex justify-center">
         <div className=" w-2/5">
           <form

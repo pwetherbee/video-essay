@@ -3,6 +3,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
 
 import { nanoid } from "@/lib/utils";
+import { revalidateChatLayout } from "@/components/actions";
 
 export const runtime = "edge";
 
@@ -70,6 +71,8 @@ export async function POST(req: Request) {
         score: createdAt,
         member: `chat:${id}`,
       });
+
+      await revalidateChatLayout(userId);
     },
   });
 

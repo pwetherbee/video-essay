@@ -1,14 +1,37 @@
 "use client";
 
 import { Message } from "ai";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import QuizQuestion from "./quiz-question";
+import { clear } from "console";
 
-export default function QuizMessage({ message }: { message: Message }) {
+export default function QuizMessage({
+  message,
+  isLoading,
+}: {
+  message: Message;
+  isLoading: boolean;
+}) {
   const quiz = useMemo(() => {
     return parseQuizMessage(message);
   }, [message]);
 
+  if (quiz.error && !isLoading) {
+    return (
+      <div>
+        <h1 className="text-xl">Unable to load quiz. Please try again.</h1>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center flex-col">
+        <h1 className="text-xl">Loading quiz...</h1>
+        <span className="loading loading-dots" />
+      </div>
+    );
+  }
   return (
     <div>
       <article className="prose">
@@ -40,9 +63,10 @@ function parseQuizMessage(message: Message) {
     const quiz = message.content.replace("%QUIZ%", "");
     return JSON.parse(quiz);
   } catch (error) {
+    console.error("Error parsing quiz message:", error);
     // if the message content is not a valid JSON object, return a default quiz
     return {
-      title: "Loading Quiz...",
+      error: true,
       questions: [],
     };
   }
